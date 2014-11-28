@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>#{texts.registrationInformation}</title>
+    </h:head>
+    <body>
+        <h:outputStylesheet name="/css/style.css" />
+        <f:view locale="#{language.localeCode}">
+            <center>
+                <h:form>
+                    <h1>JOBBER</h1>
+                    <h3>Get Job.   Give Job.</h3>
+                    <p:wizard flowListener="#{userBean.onFlowProcess}" >
+                        <p:tab title ="#{texts.registrationInformation}" id ="register" >
+                            <p:messages id="messages" closable="true"/>  
+                            <h:panelGrid columns="3" >
+                                <p:watermark value = "Email*" for="login"/>
+                                <p:inputText id = "login" title = "#{texts.enterEmail}" value="#{userBean.user.email}" 
+                                             size="35" maxlength="30" 
+                                             required="true" requiredMessage="#{texts.emptyEmail}"/>
+                                <p:tooltip for="login" showEvent="focus" hideEvent="blur" />
+
+                                <p:watermark value = "#{texts.password}*" for="password"/>
+                                <p:password id = "password" title="#{texts.rightPassword}" value="#{userBean.user.password}" 
+                                            size="35" maxlength="18" 
+                                            required="true" requiredMessage="#{texts.emptyPassword}"/>
+                                <p:tooltip for="password" showEvent="focus" hideEvent="blur" />  
+
+                                <p:watermark value = "#{texts.confirmPassword}*" for="password_again"/>
+                                <p:password id = "password_again" title = "#{texts.confirmPassword}" 
+                                            value="#{userBean.passwordConfirmation}" maxlength="18" 
+                                            size="35" required="true" requiredMessage="#{texts.confirmPassword}"/>
+                                <p:tooltip for="password_again" showEvent="focus" hideEvent="blur" />
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title ="#{texts.information}" rendered="#{userBean.userIsEmployer()}" id = "forEmployer">
+                            <p:messages id="messages1" closable="true"/> 
+                            <h:panelGrid columns="3" >
+                                <h:outputLabel value = "#{texts.name}*" for="name1"/>
+                                <p:inputText id = "name1" value="#{userBean.employer.name}" size = "80" maxlength="80" required="true" requiredMessage="#{texts.emptyName}"/>
+                                <p:watermark value = "#{texts.nameDetails}" for="name1"/>
+                                <h:outputLabel value = "#{texts.description}*" for="description"/>
+                                <p:inputTextarea id = "description" value="#{userBean.employer.description}" maxlength="500" cols="150" rows = "5" autoResize="true"/>
+                                <p:watermark value = "#{texts.descriptionDetails}" for="description"/>
+                                <h:outputLabel value = "#{texts.phone}+" for="phone"/>
+                                <p:inputText id = "phone" value="#{userBean.employer.phone}" size="25" maxlength="20">
+                                    <pe:keyFilter mask="num"/>
+                                </p:inputText>
+                                <p:watermark value = "38XXXXXXXXXX" for="phone"/>
+                            </h:panelGrid>
+
+                        </p:tab>
+                        <p:tab title ="#{texts.information}" rendered="#{userBean.userIsApplicant()}" id = "forApplicant">
+                            <p:messages id="messages2"/>  
+                            <h:panelGrid columns="3" >
+                                <h:outputLabel value = "#{texts.name}*" for="name"/>
+                                <p:inputText id = "name" value="#{userBean.applicant.name}" maxlength="20" required="true" requiredMessage="#{texts.emptyName}"/>
+                                <p:watermark value = "#{texts.name}" for="name"/>
+                                <h:outputLabel value = "#{texts.surname}*" for="surname"/>
+                                <p:inputText id = "surname" value="#{userBean.applicant.surname}" maxlength="20" required="true" requiredMessage="#{texts.emptySurname}"/>
+                                <p:watermark value = "#{texts.surname}" for="surname"/>
+                                <h:outputLabel for="age" value="#{texts.age}*"/>  
+                                <p:spinner id="age" value="#{userBean.applicant.age}"  min ="1" max ="130" size="10" required="true" />
+                                <p:watermark value = "#{texts.age}" for="age"/>
+                                <h:outputLabel value = "#{texts.education}*" for="education"/>
+                                <p:inputTextarea id = "education" value="#{userBean.applicant.education}" maxlength="500" cols="100" rows = "5" required="true" requiredMessage="#{texts.emptyEducation}"/>
+                                <p:watermark value = "#{texts.education}" for="education"/>
+                                <h:outputLabel value = "#{texts.phone}+" for="phone1"/>
+                                <p:inputText id = "phone1" value="#{userBean.applicant.phone}" size="25" maxlength="20">
+                                    <pe:keyFilter mask="num"/>
+                                </p:inputText>
+                                <p:watermark value = "38XXXXXXXXXX" for="phone"/>
+                                <h:outputLabel value = "#{texts.city}*" for="city"/>
+                                <h:selectOneMenu id="city"  value="#{userBean.applicant.city}"   converter="#{cityConverterBean}" required="true" requiredMessage="#{texts.emptyCity}" >
+                                    <f:selectItems value="#{cityBean.findCities()}" var="currentCity" itemValue="#{currentCity}" itemLabel="#{currentCity.name}" />
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab id = "save" title="#{texts.save}">
+                            <p:commandButton value = "#{texts.save}" action="#{userBean.register()}" styleClass="b1" ajax = "false"/>
+                        </p:tab>
+                    </p:wizard>
+                </h:form>
+                <h:form>
+                    <br/><br/>
+                    #{texts.language}
+                    <h:selectOneMenu value="#{language.localeCode}" onchange="submit()"
+                                     valueChangeListener="#{language.countryLocaleCodeChanged}" style="height:25px">
+                        <f:selectItems value="#{language.countriesInMap}" /> 
+                    </h:selectOneMenu><br/>
+                    <p:commandLink action="login?faces-redirect=true" value="#{texts.backToLogin}" ajax="false"/>
+
+                </h:form>
+            </center>
+
+
+        </f:view>
+    </body>
+</html>
+

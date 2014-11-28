@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <h:outputStylesheet name="/css/style.css" />
+        <title>#{texts.editPersonalInformation}</title>
+    </h:head> 
+    <body>
+        <f:view locale="#{language.localeCode}">
+            <ui:include src ="header.xhtml"/>
+            <center>  
+                <h:form>
+
+                    <p:messages id="messages"/>  
+                    <h:panelGrid columns="3" >
+                        <p:outputLabel value = "#{texts.name}" for="name"/>
+                        <p:inputText id = "name" value="#{userBean.user.applicant.name}" maxlength="80" required="true" requiredMessage="#{texts.emptyName}" />
+                        <p:watermark value = "#{texts.name}" for="name"/>
+                        <p:outputLabel value = "#{texts.surname}" for="surname"/>
+                        <p:inputText id = "surname" value="#{userBean.user.applicant.surname}" maxlength="80" required="true" requiredMessage="#{texts.emptySurname}"/>
+                        <p:watermark value = "#{texts.surname}" for="surname"/>
+                        <p:outputLabel for="age" value="#{texts.age}"/>  
+                        <p:spinner id="age" value="#{userBean.user.applicant.age}"  min ="14" max ="130" size="10" required="false" />
+                        <p:watermark value = "#{texts.age}" for="age"/>
+                        <p:outputLabel value = "#{texts.education}" for="education"/>
+                        <p:inputTextarea id = "education" value="#{userBean.user.applicant.education}" maxlength="500" cols="100" rows = "5" required="true" requiredMessage="#{texts.emptyEducation}"/>
+                        <p:watermark value = "#{texts.education}" for="education"/>
+                        <p:outputLabel value = "#{texts.phone}+" for="phone"/>
+                        <p:inputText id = "phone" value="#{userBean.user.applicant.phone}" size="25" maxlength="20">
+                            <pe:keyFilter mask="num"/>
+                        </p:inputText>
+                        <p:watermark value = "38XXXXXXXXXX" for="phone"/>
+                        <p:outputLabel value = "#{texts.city}" for="city"/>
+                        <h:selectOneMenu id="city"  value="#{userBean.user.applicant.city}"   converter="#{cityConverterBean}" required="true" requiredMessage="#{texts.emptyCity}" >
+                            <f:selectItems value="#{cityBean.findCities()}" var="currentCity" itemValue="#{currentCity}" itemLabel="#{currentCity.name}" />
+                        </h:selectOneMenu>
+
+                    </h:panelGrid>
+                    <p:commandButton value = "#{texts.save}" action="#{userBean.updateInformation()}" styleClass="b1" ajax = "false"/>
+
+                </h:form>
+                <h:form>
+                    <ui:insert name="button" />
+                </h:form>
+            </center>
+            <ui:include src ="footer.xhtml"/>
+        </f:view>
+    </body>
+</html>
+

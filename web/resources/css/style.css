@@ -1,0 +1,59 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 17, 2013, 5:17:04 PM
+    Author     : Daryna_Ragimova
+*/
+
+.green {
+    background: honeydew;
+}
+.red {
+    background: mistyrose;
+}
+.b1 {
+    color: blue; /* Белые буквы */ 
+    
+}
+.blueLink:hover{
+    color: blue;
+}
+h1 {
+    font-size:38px;
+    color: blue;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 3px;
+}
+
+.boldFont {
+    font-weight: bold;
+}
+
+
+.ui-layout-pane-north {
+    border: 0;
+}
+.ui-layout-pane-south {
+    border: 0;
+}
+.ui-layout-pane-east {
+    border: 0;
+}
+.ui-layout-pane-west {
+    border: 0;
+}
+.ui-layout-pane-center {
+    border: 0;
+}
+.ui-widget-content {
+    color: black;
+}
+.selected {
+    color: red;
+}
+
+

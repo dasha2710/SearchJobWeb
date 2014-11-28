@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<ui:composition template="/pages/templates/logout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <ui:define name="page">
+
+        <p:contextMenu for="CVsTable">
+            <p:menuitem value="#{texts.sendEmail}" action="#{searchForApplicant.sendEmail()}"/>  
+        </p:contextMenu>
+        <p:messages id ="messages" closable="true" autoUpdate="true" />
+        <p:dataTable id="CVsTable" var="cv" value="#{searchForApplicant.lazyModel}"
+                     selection="#{searchForApplicant.selectedCV}" selectionMode="single"
+                     paginator="true" rows="15"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="15,20,25"
+                     lazy="true">
+            <p:ajax event="rowSelect" update=":form:display" oncomplete="CVDialog.show()" />
+            <p:column headerText="#{texts.vacancy}" sortBy="#{cv.vacancy}" 
+                      filterBy="#{cv.vacancy}" filterMaxLength="80">
+                #{cv.vacancy}
+            </p:column>
+
+            <p:column headerText="#{texts.salary}" sortBy="#{cv.salary}" 
+                      filterBy="#{cv.salary}" filterMaxLength="6">
+                #{cv.salary}
+            </p:column>
+
+            <p:column headerText="#{texts.city}" sortBy="#{cv.applicant.city.name}" 
+                      filterBy="#{cv.applicant.city.name}" filterMaxLength="20" >
+                #{cv.applicant.city.name}
+            </p:column>
+        </p:dataTable> 
+        <p:dialog header="#{texts.cv}" widgetVar="CVDialog" resizable="true" width="1000" height="500" 
+                      showEffect="explode" hideEffect="explode" >
+                <h:panelGrid id="display" columns="1" cellpadding="4">
+                    <h1>#{searchForApplicant.selectedCV.applicant.name}</h1>
+                    <h1> #{searchForApplicant.selectedCV.applicant.surname}</h1>
+                    <h:outputLabel for="vacancy" value="#{texts.vacancy}" />  
+                    <h:outputText id = "vacancy" value = "#{searchForApplicant.selectedCV.vacancy}"/>
+                    <h:outputLabel for="skills" value="#{texts.skills}" />  
+                    <h:outputText id = "skills" value = "#{searchForApplicant.selectedCV.skills}"/>
+                    <h:outputLabel for="experience" value="#{texts.experience}" />  
+                    <h:outputText id = "experience" value = "#{searchForApplicant.selectedCV.experience}"/>
+                    <h:outputLabel for="salary" value="#{texts.salary}"/>  
+                    <h:outputText id = "salary" value = "#{searchForApplicant.selectedCV.salary}"/>
+                    <h:outputLabel for="education" value="#{texts.education}" />  
+                    <h:outputText id = "education" value = "#{searchForApplicant.selectedCV.applicant.education}"/>
+                    <h:outputLabel for="age" value="#{texts.age}" />  
+                    <h:outputText id = "age" value = "#{searchForApplicant.selectedCV.applicant.age}"/>
+                    <h:outputLabel value="#{texts.city}" for ="city" />
+                    <h:outputText id ="city" value="#{searchForApplicant.selectedCV.applicant.city}"/>
+                </h:panelGrid>
+            </p:dialog>
+        
+    </ui:define>
+</ui:composition>

@@ -3,12 +3,12 @@
   <persistence-unit name="SearchJobWebPU" transaction-type="JTA">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:jboss/datasources/JobSearch</jta-data-source>
-    <class>entities.City</class>
-    <class>entities.Applicant</class>
-    <class>entities.Cv</class>
-    <class>entities.Employer</class>
-    <class>entities.Vacancy</class>
-    <class>entities.User</class>
+    <class>ua.com.jobber.entities.Vacancy</class>
+    <class>ua.com.jobber.entities.Employer</class>
+    <class>ua.com.jobber.entities.Cv</class>
+    <class>ua.com.jobber.entities.City</class>
+    <class>ua.com.jobber.entities.Applicant</class>
+    <class>ua.com.jobber.entities.User</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <validation-mode>NONE</validation-mode>
     <properties>

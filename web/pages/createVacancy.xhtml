@@ -14,7 +14,7 @@
             <p:messages id="messages" autoUpdate="true" closable="true" />  
             <ui:include src ="templates/header.xhtml"/> 
             <center>
-                <h:form>
+                <h:form rendered="#{!userBean.checkNumberOfVacancies()}">
 
 
                     <h:panelGrid columns="2"> 
@@ -36,7 +36,11 @@
                     </h:panelGrid>  
                     <p:commandButton value = "#{texts.save}" action="#{userBean.saveVacancy()}" styleClass="b1" ajax = "false"/><br/>
                 </h:form>
-                <h:form>
+                <h:form rendered="#{userBean.checkNumberOfVacancies()}">
+                    <h1>#{texts.messageForVacancies}</h1>
+                    <p:commandButton value = "#{texts.toPrevious}" styleClass="b1" action = "edit_personal_info_applicant?faces-redirect=true"/>
+                </h:form>
+                <h:form rendered="#{!userBean.checkNumberOfVacancies()}">
                     <p:commandButton value = "#{texts.toPrevious}" styleClass="b1" action = "edit_personal_info_employer?faces-redirect=true">
                         <p:confirm header="#{texts.confirm}" message="#{texts.doYouWant}" icon="ui-icon-alert" />  
                     </p:commandButton>

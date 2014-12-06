@@ -25,13 +25,13 @@
 
                                 <p:watermark value = "#{texts.password}*" for="password"/>
                                 <p:password id = "password" title="#{texts.rightPassword}" value="#{userBean.user.password}" 
-                                            size="35" maxlength="18" 
+                                            maxlength="1000" size="35"  
                                             required="true" requiredMessage="#{texts.emptyPassword}"/>
                                 <p:tooltip for="password" showEvent="focus" hideEvent="blur" />  
 
                                 <p:watermark value = "#{texts.confirmPassword}*" for="password_again"/>
                                 <p:password id = "password_again" title = "#{texts.confirmPassword}" 
-                                            value="#{userBean.passwordConfirmation}" maxlength="18" 
+                                            value="#{userBean.passwordConfirmation}" maxlength="1000" 
                                             size="35" required="true" requiredMessage="#{texts.confirmPassword}"/>
                                 <p:tooltip for="password_again" showEvent="focus" hideEvent="blur" />
                             </h:panelGrid>
@@ -63,7 +63,7 @@
                                 <p:inputText id = "surname" value="#{userBean.applicant.surname}" maxlength="20" required="true" requiredMessage="#{texts.emptySurname}"/>
                                 <p:watermark value = "#{texts.surname}" for="surname"/>
                                 <h:outputLabel for="age" value="#{texts.age}*"/>  
-                                <p:spinner id="age" value="#{userBean.applicant.age}"  min ="1" max ="130" size="10" required="true" />
+                                <p:spinner id="age" value="#{userBean.applicant.age}"  min ="14" max ="130" size="10" required="true" />
                                 <p:watermark value = "#{texts.age}" for="age"/>
                                 <h:outputLabel value = "#{texts.education}*" for="education"/>
                                 <p:inputTextarea id = "education" value="#{userBean.applicant.education}" maxlength="500" cols="100" rows = "5" required="true" requiredMessage="#{texts.emptyEducation}"/>

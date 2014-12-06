@@ -19,7 +19,7 @@
     </context-param>
     <session-config>
         <session-timeout>
-            30
+            -1
         </session-timeout>
         <cookie-config>
             <http-only>true</http-only>
@@ -66,7 +66,7 @@
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException
         </exception-type>
-        <location>/SessionExpired.xhtml</location>
+        <location>/login.xhtml</location>
     </error-page>
 </web-app>
 

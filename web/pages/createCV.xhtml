@@ -13,7 +13,7 @@
             <p:messages id="messages" autoUpdate="true" closable="true" />
             <ui:include src ="templates/header.xhtml"/> 
             <center>
-                <h:form>
+                <h:form rendered="#{!userBean.checkNumberOfCvs()}">
 
                     <h:panelGrid columns="2"> 
                         <p:outputLabel value = "#{texts.vacancy}" for="vacancy"/>
@@ -28,12 +28,16 @@
                     <p:commandButton value = "#{texts.save}" action="#{userBean.saveCV()}" styleClass="b1" ajax = "false"/>
 
                 </h:form>
-                <h:form>
+                <h:form rendered="#{userBean.checkNumberOfCvs()}">
+                    <h1>#{texts.messageForCVs}</h1>
+                    <p:commandButton value = "#{texts.toPrevious}" styleClass="b1" action = "edit_personal_info_applicant?faces-redirect=true"/>
+                </h:form>
+                <h:form rendered="#{!userBean.checkNumberOfCvs()}" >
                     <p:commandButton value = "#{texts.toPrevious}" styleClass="b1" action = "edit_personal_info_applicant?faces-redirect=true">
                         <p:confirm header="#{texts.confirm}" message="#{texts.doYouWant}" icon="ui-icon-alert" />  
                     </p:commandButton>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode" >  
                         <p:commandButton value="#{texts.yes}"   type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                         <p:commandButton value="#{texts.no}" type="button" styleClass="ui-confirmdialog-no"  icon="ui-icon-close"/>       
                     </p:confirmDialog>

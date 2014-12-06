@@ -22,7 +22,7 @@
                 #{cv.vacancy}
             </p:column>
 
-            <p:column headerText="#{texts.salary}" sortBy="#{cv.salary}" 
+            <p:column headerText="#{texts.salary} #{texts.less}" sortBy="#{cv.salary}" 
                       filterBy="#{cv.salary}" filterMaxLength="6">
                 #{cv.salary}
             </p:column>
@@ -30,6 +30,11 @@
             <p:column headerText="#{texts.city}" sortBy="#{cv.applicant.city.name}" 
                       filterBy="#{cv.applicant.city.name}" filterMaxLength="20" >
                 #{cv.applicant.city.name}
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton value="#{texts.sendEmail}" action="#{searchForApplicant.sendEmail(cv)}" icon ="ui-icon-mail-closed"/>
+                </center>
             </p:column>
         </p:dataTable> 
         <p:dialog header="#{texts.cv}" widgetVar="CVDialog" resizable="true" width="1000" height="500" 

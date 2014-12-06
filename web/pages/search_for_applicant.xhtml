@@ -4,9 +4,6 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html">
     <ui:define name="page">
-        <p:contextMenu for="vacanciesTable">
-            <p:menuitem value="#{texts.sendEmail}" action="#{searchForJob.sendEmail()}"/>  
-        </p:contextMenu>
         <p:messages id ="messages" closable="true" autoUpdate="true" />
         <p:dataTable id="vacanciesTable" var="vacancy" value="#{searchForJob.lazyModel}"
                      selection="#{searchForJob.selectedVacancy}" selectionMode="single"
@@ -20,7 +17,7 @@
                 #{vacancy.name}
             </p:column>
 
-            <p:column headerText="#{texts.salary}" sortBy="#{vacancy.salary}" 
+            <p:column headerText="#{texts.salary} #{texts.bigger}" sortBy="#{vacancy.salary}" 
                       filterBy="#{vacancy.salary}" filterMaxLength="6">
                 #{vacancy.salary}
             </p:column>
@@ -28,6 +25,11 @@
             <p:column headerText="#{texts.city}" sortBy="#{vacancy.city.name}" 
                       filterBy="#{vacancy.city.name}" filterMaxLength="20">
                 #{vacancy.city.name}
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton value="#{texts.sendEmail}" action="#{searchForJob.sendEmail(vacancy)}" icon ="ui-icon-mail-closed"/>
+                </center>
             </p:column>
         </p:dataTable> 
         

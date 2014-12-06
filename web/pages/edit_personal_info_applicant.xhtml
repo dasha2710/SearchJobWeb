@@ -19,14 +19,6 @@
             <h:outputText id="city"  value="#{userBean.user.applicant.city}"/> 
         </h:panelGrid>
 
-        <p:contextMenu for="CVs">
-            <p:menuitem value="#{texts.edit}"  action="editCV?faces-redirect=true" update="CVs"/>
-            <p:menuitem value="#{texts.changeStatus}" action="#{userBean.changeStatusCv()}" update="CVs" /> 
-            <p:menuitem oncomplete="confirmDelete.show()"  
-                        ajax="true" 
-                        value="#{texts.delete}"  update="CVs" />
-        </p:contextMenu>
-
         <p:confirmDialog id="confirmDialog"
                          widgetVar="confirmDelete"
 
@@ -77,6 +69,23 @@
             </p:column>
             <p:column headerText="#{texts.status}" >
                 #{cv.status == true ? texts.activeCV : texts.passiveCV}
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton value="#{texts.changeStatus}" action="#{userBean.changeStatusCv(cv)}" update="CVs" />
+                </center>
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton action="#{userBean.redirectToEditCV(cv)}" update="CVs" icon="ui-icon-pencil"/>
+                </center>
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton oncomplete="confirmDelete.show()"  action="#{userBean.setSelectedCv(cv)}"
+                        ajax="true" 
+                        update="CVs" icon="ui-icon-trash"/>
+                </center>
             </p:column>
         </p:dataTable> 
     </ui:define>

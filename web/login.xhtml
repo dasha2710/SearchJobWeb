@@ -23,7 +23,7 @@
                     <p:inputText id = "login" value="#{userBean.user.email}" maxlength="30" size="35" required="true" requiredMessage="#{texts.emptyEmail}"/>
 
                     <p:watermark value = "#{texts.password}" for="password"/>
-                    <p:password id = "password" value="#{userBean.user.password}" maxlength="16" size="35" required="true" requiredMessage="#{texts.emptyPassword}"/>
+                    <p:password id = "password" value="#{userBean.user.password}" maxlength="1000" size="35" required="true" requiredMessage="#{texts.emptyPassword}"/>
                 </h:panelGrid>    
                 <p:commandButton value = "#{texts.login}" action="#{userBean.login()}" ajax = "false" styleClass="b1"/> 
 

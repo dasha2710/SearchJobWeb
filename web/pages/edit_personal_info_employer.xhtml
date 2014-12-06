@@ -75,6 +75,23 @@
             <p:column headerText="#{texts.status}" >
                 #{vacancy.status == true ? texts.activeVacancy : texts.passiveVacancy}
             </p:column>
+            <p:column>
+                <center>
+                <p:commandButton value="#{texts.changeStatus}" action="#{userBean.changeStatusVacancy(vacancy)}" update="Vacancies" />
+                </center>
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton action="#{userBean.redirectToEditVacancy(vacancy)}" update="Vacancies" icon="ui-icon-pencil"/>
+                </center>
+            </p:column>
+            <p:column>
+                <center>
+                <p:commandButton oncomplete="confirmDelete.show()"  action="#{userBean.setSelectedVacancy(vacancy)}"
+                        ajax="true" 
+                        update="Vacancies" icon="ui-icon-trash"/>
+                </center>
+            </p:column>
         </p:dataTable>
     </ui:define>
 </ui:composition>

@@ -55,7 +55,6 @@ public class UserBean implements Serializable {
     private CvDAO cvDAO;
     @Inject
     private VacancyDAO vacancyDAO;
-
     private User user;
     @Pattern(regexp = ".{6,1000}$", message = "{invalidPassword}")
     private String passwordConfirmation;
@@ -160,8 +159,6 @@ public class UserBean implements Serializable {
     public void setApplicant(Applicant applicant) {
         this.applicant = applicant;
     }
-    
-    
 
     public void sendPassword() {
         User temp = userDAO.findUser(user.getEmail());
@@ -171,13 +168,13 @@ public class UserBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(
                     null,
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            text, null));
+                    text, null));
 
         } else {
             user = temp;
             String currentPass = user.getPassword();
             String pass = ua.com.jobber.util.PasswordGenerator.generate();
-            user.setPassword(ua.com.jobber.util.Encrypt.encryptSHA256(pass) + user.getSalt());
+            user.setPassword(ua.com.jobber.util.Encrypt.encryptSHA256(pass + user.getSalt()));
             if (ua.com.jobber.sendingEmail.SendingEmail.sendEmail(user.getEmail(), "New password is " + pass)) {
                 userDAO.update(user);
                 ResourceBundle bundle = ResourceBundle.getBundle("resources.jsf.texts", FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -185,7 +182,7 @@ public class UserBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(
                         null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO,
-                                text, null));
+                        text, null));
             } else {
                 user.setPassword(currentPass);
                 ResourceBundle bundle = ResourceBundle.getBundle("resources.jsf.texts", FacesContext.getCurrentInstance().getViewRoot().getLocale());
@@ -193,50 +190,53 @@ public class UserBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(
                         null,
                         new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                text, null));
+                        text, null));
 
             }
         }
     }
-    
-    public String changePassword(){
+
+    public String changePassword() {
         oldPassword = ua.com.jobber.util.Encrypt.encryptSHA256(oldPassword + user.getSalt());
-        if (!user.getPassword().equals(oldPassword)){
+        if (!user.getPassword().equals(oldPassword)) {
             ResourceBundle bundle = ResourceBundle.getBundle("resources.jsf.texts", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-                String text = bundle.getString("incorrectPassword");
-                FacesContext.getCurrentInstance().addMessage(
-                        null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                text, null));
-                return "changePassword";
+            String text = bundle.getString("incorrectPassword");
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    text, null));
+            return "changePassword";
         }
-        
-        if (!newPassword.equals(passwordConfirmation)){
+
+        if (!newPassword.equals(passwordConfirmation)) {
             ResourceBundle bundle = ResourceBundle.getBundle("resources.jsf.texts", FacesContext.getCurrentInstance().getViewRoot().getLocale());
             String text = bundle.getString("PasswordsDoesNotMatch");
 
             FacesContext.getCurrentInstance()
                     .addMessage(
-                            null,
-                            new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                    text, null));
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    text, null));
             return "changePassword";
         }
         newPassword = ua.com.jobber.util.Encrypt.encryptSHA256(newPassword + user.getSalt());
         user.setPassword(newPassword);
         userDAO.update(user);
-        if (userIsEmployer())
+        if (userIsEmployer()) {
             return "edit_personal_info_employer?faces-redirect=true";
-        else
+        } else {
             return "edit_personal_info_applicant?faces-redirect=true";
-            
+        }
+
     }
-    public String cancelChangingPassword(){
-        if (userIsEmployer())
+
+    public String cancelChangingPassword() {
+        if (userIsEmployer()) {
             return "edit_personal_info_employer?faces-redirect=true";
-        else
+        } else {
             return "edit_personal_info_applicant?faces-redirect=true";
-            
+        }
+
     }
 
     public String logoutEvent() {
@@ -249,7 +249,7 @@ public class UserBean implements Serializable {
                 Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return "login?faces-redirect=true";
+        return "login";
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -267,9 +267,9 @@ public class UserBean implements Serializable {
 
             FacesContext.getCurrentInstance()
                     .addMessage(
-                            null,
-                            new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                    text, null));
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    text, null));
             return false;
         } else {
             return true;
@@ -284,7 +284,7 @@ public class UserBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(
                     null,
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            text, null));
+                    text, null));
             return false;
         } else {
             return true;
@@ -294,7 +294,7 @@ public class UserBean implements Serializable {
     public String register() {
         String salt = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
         try {
-            
+
             user.setSalt(salt);
             user.setPassword(ua.com.jobber.util.Encrypt.encryptSHA256(passwordConfirmation + salt));
             userDAO.create(user);
@@ -304,7 +304,7 @@ public class UserBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(
                     null,
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            text, null));
+                    text, null));
             Logger.getLogger(UserBean.class
                     .getName()).log(Level.SEVERE, null, e);
             return "register";
@@ -326,17 +326,17 @@ public class UserBean implements Serializable {
             String targetURI = (String) eContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
             if (isAuthenticated()) {
                 logout();
-                
+
             }
             User userTemp = userDAO.findUser(user.getEmail());
-            
+
             if (userTemp == null) {
                 ResourceBundle bundle = ResourceBundle.getBundle("resources.jsf.texts", FacesContext.getCurrentInstance().getViewRoot().getLocale());
                 String text = bundle.getString("IncorrectLoginPassword");
                 FacesContext.getCurrentInstance().addMessage(
                         null,
                         new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                text, null));
+                        text, null));
                 return "login";
             } else {
                 if (targetURI != null) {
@@ -355,8 +355,8 @@ public class UserBean implements Serializable {
                     user = userTemp;
                     HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                     session.setMaxInactiveInterval(1800);
-                    
-                    
+
+
                     if (user.getRole() == Role.APPLICANT) {
                         return "pages/edit_personal_info_applicant?faces-redirect=true";
                     } else {
@@ -373,9 +373,9 @@ public class UserBean implements Serializable {
 
             FacesContext.getCurrentInstance()
                     .addMessage(
-                            null,
-                            new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                    text, null));
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                    text, null));
 
             return "login";
         }
@@ -389,8 +389,8 @@ public class UserBean implements Serializable {
     public boolean checkNumberOfVacancies() {
         return user.getEmployer().getVacancies().size() >= 20;
     }
-    
-     public String roleIsEmployer() {
+
+    public String roleIsEmployer() {
         user = new User();
         employer = new Employer();
         user.setRole(Role.EMPLOYER);
@@ -465,6 +465,9 @@ public class UserBean implements Serializable {
             return "pages/edit_personal_info_employer?faces-redirect=true";
         } else {
             try {
+                if (applicant.getAge() < 14) {
+                    applicant.setAge(14);
+                }
                 applicant.setUser(user);
                 user.setApplicant(applicant);
                 applicantDAO.create(applicant);
@@ -479,15 +482,12 @@ public class UserBean implements Serializable {
 
     public String updateInformation() {
         if (user.getRole() == Role.EMPLOYER) {
-            try {
-                employerDAO.update(user.getEmployer());
-
-            } catch (Exception ex) {
-                Logger.getLogger(UserBean.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
+            employerDAO.update(user.getEmployer());
             return "edit_personal_info_employer?faces-redirect=true";
         } else {
+            if (applicant.getAge() < 14) {
+                applicant.setAge(14);
+            }
             applicantDAO.update(user.getApplicant());
             return "edit_personal_info_applicant?faces-redirect=true";
         }
@@ -554,13 +554,13 @@ public class UserBean implements Serializable {
         }
         return "edit_personal_info_employer?faces-redirect=true";
     }
-    
-    public String redirectToEditCV(Cv selectedCV){
+
+    public String redirectToEditCV(Cv selectedCV) {
         this.selectedCv = selectedCV;
         return "editCV?faces-redirect=true";
     }
-    
-    public String redirectToEditVacancy(Vacancy vacancy){
+
+    public String redirectToEditVacancy(Vacancy vacancy) {
         this.selectedVacancy = vacancy;
         return "editVacancy?faces-redirect=true";
     }

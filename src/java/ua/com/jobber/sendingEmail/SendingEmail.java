@@ -29,16 +29,6 @@ public class SendingEmail {
 
     public static boolean sendEmail(String email, String msgBody) {
         try {
-
-//            final String username = "businkadasha@gmail.com";
-//            final String password = "Dasha2710";
-//            
-//            Properties props = System.getProperties();
-//            props.put("mail.smtp.starttls.enable", "true");
-//            props.put("mail.smtp.host", "smtp.gmail.com");
-//            props.put("mail.transport.protocol", "smtp");
-//            props.put("mail.smtp.auth", "true");
-//            props.put("mail.smtp.port", "587");
             Properties props = new Properties();
             if (loadPropertiesFile(props)) {
                 return false;
